@@ -6,7 +6,7 @@ import Box from "@mui/material/Box/Box"
 function App() {
   return (
     <Box className="App">
-      hey o
+      hey o ytq
     </Box>
   );
 }
