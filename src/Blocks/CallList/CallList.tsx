@@ -11,7 +11,7 @@ import CallMadeOutlinedIcon from '@mui/icons-material/CallMadeOutlined';
 import CallReceivedOutlinedIcon from '@mui/icons-material/CallReceivedOutlined';
 import Box from "@mui/material/Box/Box"
 import { PaperBox } from './CallList.styled'
-
+import { ListHeader } from './ListHeader/ListHeader'
 function createData(
     type: any,
     time: any,
@@ -24,9 +24,15 @@ function createData(
     return { type, time, collegue, call, source, rating, duration };
 }
 
+// - листинг звонков с выборкой по датам; 
+// - фильтрация звонков по типу: входящие, исходящие или все звонки; 
+// - проигрывание записи (если есть);
+//  - сортировка по дате и продолжительности через API. 
 
-
-
+// https://api.skilla.ru/mango/getList
+// ? date_start=<начальная дата>
+// & date_end=<конечная дата>
+// & in_out=<признак входящего или исходящего звонка></признак>
 export const CallList = ({ }) => {
     const [list, setList] = useState([])
     const url = "https://api.skilla.ru/mango/getList"
@@ -81,7 +87,9 @@ export const CallList = ({ }) => {
             el.time),)
     }, [list])
     return (
+
         <Box sx={{ width: "1440px", margin: "64px auto 0 auto" }}>
+            <ListHeader />
             <TableContainer component={PaperBox}>
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
@@ -89,7 +97,7 @@ export const CallList = ({ }) => {
                             <TableCell>Тип</TableCell>
                             <TableCell align="right">Время</TableCell>
                             <TableCell align="right">Сотрудник</TableCell>
-                            <TableCell align="right">Звонок</TableCell>
+                            <TableCell align="right" sx={{ width: "246px", boxSizing: "border-box" }}>Звонок</TableCell>
                             <TableCell align="right">Источник</TableCell>
                             <TableCell align="right">Оценка</TableCell>
                             <TableCell align="right">Длительность</TableCell>
@@ -107,7 +115,7 @@ export const CallList = ({ }) => {
                                 </TableCell>
                                 <TableCell align="right">{row.time}</TableCell>
                                 <TableCell align="right"><Box sx={{ display: "flex", justifyContent: "center" }}><Avatar alt={row.collegue.name} src={row.collegue.avatar} /></Box></TableCell>
-                                <TableCell align="right">{row.call}</TableCell>
+                                <TableCell align="right" sx={{ width: "246px", boxSizing: "border-box" }}>{row.call}</TableCell>
                                 <TableCell align="right">{row.source}</TableCell>
                                 <TableCell align="right">{row.rating}</TableCell>
                                 <TableCell align="right">{row.duration}</TableCell>
