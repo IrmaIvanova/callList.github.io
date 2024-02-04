@@ -23,7 +23,7 @@ function createData(
 }
 
 // - листинг звонков с выборкой по датам; 
-// - фильтрация звонков по типу: входящие, исходящие или все звонки; 
+// - фильтрация звонков по типу: входящие, исходящие или все звонки; +
 // - проигрывание записи (если есть);
 //  - сортировка по дате и продолжительности через API. 
 
@@ -31,10 +31,25 @@ function createData(
 // ? date_start=<начальная дата>
 // & date_end=<конечная дата>
 // & in_out=<признак входящего или исходящего звонка></признак>
-export const CallList = ({ }) => {
+export const CallList = () => {
     const [list, setList] = useState([])
-    const url = "https://api.skilla.ru/mango/getList"
-    const getApiData = async () => {
+
+    const [calls, setСalls] = useState("")
+    const [type, setType] = useState("")
+    const [collegues, setСollegues] = useState("")
+    const [source, setSource] = useState("")
+    const [rating, setRating] = useState("")
+    const [errors, setErrors] = useState("")
+    const [search, setSearch] = useState("")
+
+
+    const getApiData = async (params?: { [key: string]: string }) => {
+       const callType = type === "" ? "" : "?in_out=" + type
+        const opts = search === "" ? "" : "?search=" + search + callType
+        
+
+        const url = `https://api.skilla.ru/mango/getList${opts}`
+
         const response = await fetch(
             url, {
             method: 'POST',
@@ -42,12 +57,9 @@ export const CallList = ({ }) => {
                 'Content-Type': 'application/json;charset=utf-8',
                 "Authorization": "Bearer testtoken"
 
-            }
+            },
         }
         ).then((response) => response.json());
-
-
-
 
         // Обновим состояние
         setList(response.results);
@@ -57,7 +69,7 @@ export const CallList = ({ }) => {
 
     useEffect(() => {
         getApiData()
-    }, [])
+    }, [type, search])
 
     console.log("list", list)
     const getTime = (date: string) => {
@@ -88,7 +100,13 @@ export const CallList = ({ }) => {
     return (
 
         <Box sx={{ width: "1440px", margin: "64px auto 0 auto" }}>
-            <ListHeader />
+            <ListHeader search={search} onSearchChange={setSearch}
+                onChangeType={setType}
+                setErrors={setErrors}
+                setRating={setRating}
+                setSource={setSource}
+                setСalls={setСalls}
+                setСollegues={setСollegues} />
             <TableContainer component={PaperBox}>
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>

@@ -4,6 +4,7 @@ import  { MenuProps } from '@mui/material/Menu';
 
 export interface IDropdownOwnProps extends MenuProps {
     options: TOption[]
+    // value:string
     defaultValue:string;
     onChange: (value: any) => void
 }

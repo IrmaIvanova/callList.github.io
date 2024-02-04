@@ -1,196 +1,96 @@
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, FC } from 'react';
 import Box from "@mui/material/Box/Box"
 import { Dropdown } from "../../../UIComponents/Dropdown/Dropdown"
-import { TOption } from "../../../UIComponents/Dropdown/Dropdown.interface"
+import { calls, collegues, errors, rating, source, types } from './FilterConstants'
 import SearchIcon from '@mui/icons-material/Search';
+import { TOption } from "../../../UIComponents/Dropdown/Dropdown.interface"
+import TextField from '@mui/material/TextField';
+import InputAdornment from '@mui/material/InputAdornment';
 
-// - листинг звонков с выборкой по датам; 
-// - фильтрация звонков по типу: входящие, исходящие или все звонки; 
-// - проигрывание записи (если есть);
-//  - сортировка по дате и продолжительности через API. 
+interface IListHeaderProps {
+    search: string;
+    onSearchChange: (value: string) => void
+    onChangeType: (value: string) => void
+    setСalls: (value: string) => void
+    setСollegues: (value: string) => void
+    setSource: (value: string) => void
+    setErrors: (value: string) => void
+    setRating: (value: string) => void
+    filters?: IFilterProps[]
+}
 
-// https://api.skilla.ru/mango/getList
-// ? date_start=<начальная дата>
-// & date_end=<конечная дата>
-// & in_out=<признак входящего или исходящего звонка></признак>
+interface IFilterProps {
 
+    defaultValue: string;
+    onFilterChange: (value: string) => void
+    open: boolean
+    options: TOption
 
-
-const calls: TOption[] = [
-    {
-        label: "Все звонки",
-        value: "all"
-    },
-    {
-        label: "Все клиенты",
-        value: 'clients'
-    },
-    {
-        label: "Исполнители",
-        value: 'workers'
-    },
-    {
-        label: "Через прилложение",
-        value: 'app'
-    },
-]
-const types: TOption[] = [
-    {
-        label: "Все типы",
-        value: "all"
-    },
-    {
-        label: "Входящии",
-        value: '0'
-    },
-    {
-        label: "axaxa",
-        value: '1'
-    }
-]
-const collegues: TOption[] = [
-
-    {
-        label: "Все сотрудники",
-        value: "all"
-    },
-    {
-        label: "Входящие",
-        value: '0'
-    },
-    {
-        label: "Исходящие",
-        value: '1'
-    }
-]
-
-
-const source: TOption[] = [
-    {
-        label: "Все источники",
-        value: "all"
-    },
-    {
-        label: "С сайта",
-        value: 'from_site'
-    },
-    {
-        label: "Yandex",
-        value: 'yandex'
-    },
-    {
-        label: "Google",
-        value: 'google'
-    },
-    {
-        label: "Номер линии",
-        value: '12345678'
-    },
-    {
-        label: "Без источника",
-        value: 'empty'
-    }
-]
-
-
-const rating: TOption[] = [
-    {
-        label: "Все оценки",
-        value: "all"
-    },
-
-]
-const errors: TOption[] = [
-    {
-        label: "Все ошибки",
-        value: "all"
-    },
-    {
-        label: "Без ошибок",
-        value: 'noerrors'
-    },
-    {
-        label: "Скрипт не использован",
-        value: 'noscript'
-    },
-    {
-        label: "Превышено время ожидания в очереди удержания",
-        value: 'timeover '
-    },
-    {
-        label: "Вызываемый номер недоступен",
-        value: 'notavailable'
-    },
-    {
-        label: "Вызов не получил ответа в течение времени ожидания",
-        value: 'noanswer'
-    },
-    {
-        label: "Вызов завершен вызывающим абонентом",
-        value: 'subscribercompleted'
-    }
-]
-export const ListHeader = ({ }) => {
-    const [list, setList] = useState([])
-    const url = "https://api.skilla.ru/mango/getList"
-
-    const getApiData = async () => {
-        const response = await fetch(
-            url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json;charset=utf-8',
-                "Authorization": "Bearer testtoken"
-
-            }
-        }
-        ).then((response) => response.json());
+}
 
 
 
+export const ListHeader: FC<IListHeaderProps> = ({ search, onSearchChange, filters, onChangeType, setСalls, setСollegues, setSource, setErrors, setRating }) => {
 
-        // Обновим состояние
-        setList(response.results);
-
-
-    };
-
-    useEffect(() => {
-        getApiData()
-    }, [])
-
-
-
+    const [showSearch, setShowSearch] = useState(false)
     return (<Box sx={{ width: "1440px", }}>
         <Box sx={{ height: "80px", }}>
 
         </Box>
         <Box sx={{ height: "48px", display: "flex", justifyContent: "space-between" }}>
-            <Box sx={{
+
+            {!showSearch ? < Box sx={{
                 display: "flex", alignItems: 'center',
                 color: "rgba(94, 119, 147, 1)",
 
-            }}><SearchIcon sx={{
-                marginRight: "5px",
-                textTransform: "inherit",
-                color: "rgba(94, 119, 147, 1)",
-                "&:hover": {
-                    color: "rgba(0, 44, 251, 1)",
-                    background: "none"
-                }
-            }} /> Поиск по звонкам </Box>
-            
+            }}>
+                <SearchIcon sx={{
+                    marginRight: "5px",
+                    textTransform: "inherit",
+                    color: "rgba(94, 119, 147, 1)",
+                    "&:hover": {
+                        color: "rgba(0, 44, 251, 1)",
+                        background: "none"
+                    }
+                }}
+                    onClick={() => setShowSearch(true)}
+                /> Поиск по звонкам </Box>
+                :
+                <TextField
+                    id="outlined-search"
+                    type="search"
+                    value={search}
+                    onChange={(event) => onSearchChange(event.currentTarget.value)}
+                    InputProps={{
+                        startAdornment: (
+                            <InputAdornment position="start">
+                                <SearchIcon />
+                            </InputAdornment>
+                        ),
+                    }}
+                    sx={{
+                        ".MuiOutlinedInput-root": {
+                            borderRadius: "30px",
+                            width: "482px"
+                        },
+                        ".MuiInputBase-input.MuiOutlinedInput-input.MuiInputBase-inputTypeSearch ": {
+                            padding: "8.5px 14px"
+                        }
+
+                    }} />
+
+            }
             <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                <Dropdown open={false} options={types} defaultValue={"all"} onChange={(value) => { console.log("Value", value) }} />
-                <Dropdown open={false} options={collegues} defaultValue={"all"} onChange={(value) => { console.log("Value", value) }} />
-                <Dropdown open={false} options={calls} defaultValue={"all"} onChange={(value) => { console.log("Value", value) }} />
-                <Dropdown open={false} options={source} defaultValue={"all"} onChange={(value) => { console.log("Value", value) }} />
-                <Dropdown open={false} options={errors} defaultValue={"all"} onChange={(value) => { console.log("Value", value) }} />
-                <Dropdown open={false} options={rating} defaultValue={"all"} onChange={(value) => { console.log("Value", value) }} />
+                <Dropdown open={false} options={types} defaultValue={"all"} onChange={(value) => onChangeType(value)} />
+                <Dropdown open={false} options={collegues} defaultValue={"all"} onChange={(value) => setСalls(value)} />
+                <Dropdown open={false} options={calls} defaultValue={"all"} onChange={(value) => setСollegues(value)} />
+                <Dropdown open={false} options={source} defaultValue={"all"} onChange={(value) => setSource(value)} />
+                <Dropdown open={false} options={errors} defaultValue={"all"} onChange={(value) => setErrors(value)} />
+                <Dropdown open={false} options={rating} defaultValue={"all"} onChange={(value) => setRating(value)} />
             </Box>
         </Box>
-    </Box>
+    </Box >
     );
 }
 
