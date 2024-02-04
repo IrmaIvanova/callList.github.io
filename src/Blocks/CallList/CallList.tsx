@@ -45,10 +45,10 @@ export const CallList = () => {
 
     const getApiData = async (params?: { [key: string]: string }) => {
        const callType = type === "" ? "" : "?in_out=" + type
-        const opts = search === "" ? "" : "?search=" + search + callType
+        // const opts = search === "" ? "" : "?search=" + search + callType
         
 
-        const url = `https://api.skilla.ru/mango/getList${opts}`
+        const url = `https://api.skilla.ru/mango/getList${callType}`
 
         const response = await fetch(
             url, {
