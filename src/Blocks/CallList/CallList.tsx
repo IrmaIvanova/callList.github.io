@@ -1,17 +1,15 @@
 
-import React, { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Avatar from '@mui/material/Avatar';
-import CallMadeOutlinedIcon from '@mui/icons-material/CallMadeOutlined';
-import CallReceivedOutlinedIcon from '@mui/icons-material/CallReceivedOutlined';
 import Box from "@mui/material/Box/Box"
 import { PaperBox } from './CallList.styled'
 import { ListHeader } from './ListHeader/ListHeader'
+import { ListItem } from './ListItem/ListItem'
 function createData(
     type: any,
     time: any,
@@ -66,7 +64,7 @@ export const CallList = ({ }) => {
         const TimeArr = new Date(date).toLocaleTimeString().split(":")
         return TimeArr.filter((el: string, idx: number) => idx !== TimeArr.length - 1).join(":");
     };
-    console.log("time", getTime("2024-02-02 20:03:01"))
+
 
     const rows = useMemo(() => {
 
@@ -86,6 +84,7 @@ export const CallList = ({ }) => {
             0,
             el.time),)
     }, [list])
+
     return (
 
         <Box sx={{ width: "1440px", margin: "64px auto 0 auto" }}>
@@ -104,22 +103,8 @@ export const CallList = ({ }) => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {rows.map((row) => (
-                            <TableRow
-                                key={row.type}
-                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                            >
-                                <TableCell component="th" scope="row">
-                                    {row.type.in_out === 0 ? <CallMadeOutlinedIcon color={row.type.status === "Дозвонился" ? "success" : "error"} /> :
-                                        <CallReceivedOutlinedIcon color={row.type.status === "Дозвонился" ? "primary" : "error"} />}
-                                </TableCell>
-                                <TableCell align="right">{row.time}</TableCell>
-                                <TableCell align="right"><Box sx={{ display: "flex", justifyContent: "center" }}><Avatar alt={row.collegue.name} src={row.collegue.avatar} /></Box></TableCell>
-                                <TableCell align="right" sx={{ width: "246px", boxSizing: "border-box" }}>{row.call}</TableCell>
-                                <TableCell align="right">{row.source}</TableCell>
-                                <TableCell align="right">{row.rating}</TableCell>
-                                <TableCell align="right">{row.duration}</TableCell>
-                            </TableRow>
+                        {rows.map((row, index: number) => (
+                            <ListItem row={row} index={index} />
                         ))}
                     </TableBody>
                 </Table>
