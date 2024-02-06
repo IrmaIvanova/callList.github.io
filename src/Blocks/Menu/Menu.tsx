@@ -70,7 +70,7 @@ export const MenuComponent = ({ }) => {
                     <AddCircleOutlinedIcon
                         sx={{
                             color: "#D8E4FB8F",
-                            fontSize: "24px"
+                            fontSize: "30px"
                         }}
                     />
                 </ButtonStyled>
@@ -79,7 +79,7 @@ export const MenuComponent = ({ }) => {
                     <Typography variant="body1">Оплата</Typography>
                     <ErrorOutlinedIcon sx={{
                         color: "#D8E4FB8F",
-                        fontSize: "24px"
+                        fontSize: "30px"
                     }} />
                 </ButtonStyled>
             </ButtonBox>
