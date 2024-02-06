@@ -43,7 +43,7 @@ export const CallList = () => {
     const [search, setSearch] = useState("")
 
 
-    const getApiData = async (params?: { [key: string]: string }) => {
+    const getApiData = async (params?: { [key: string]: string }) => { 
        const callType = type === "" ? "" : "?in_out=" + type
         // const opts = search === "" ? "" : "?search=" + search + callType
         
