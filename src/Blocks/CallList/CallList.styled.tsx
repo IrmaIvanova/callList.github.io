@@ -30,14 +30,15 @@ export const ButtonStyled = styled(Button)({
     textTransform: "initial",
     "&.ButtonSortActive": {
         backgroundColor: "#0000002b!important"
-    } 
+    }
 
 }) as typeof Button
 
 export const TableCellHead = styled(TableCell)({
     color: "#5E7793",
     textAlign: "left",
-    fontSize: "14px"
+    fontSize: "14px",
+    boxSizing: "border-box"
 
 }) as typeof TableCell
 

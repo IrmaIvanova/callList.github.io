@@ -36,12 +36,9 @@ export const CallList = () => {
     const [type, setType] = useState("all")
     const [search, setSearch] = useState("")
     const [sort, setSort] = useState("date")
-    const [dateSort, setDateSort] = useState("desc")
-    const [timeSort, setTimeSort] = useState("desc")
+    const [dateSort, setDateSort] = useState("DESC")
+    const [timeSort, setTimeSort] = useState("DESC")
 
- 
-    // Параметр ASC (по умолчанию)  от меньших значений к большим. 
-    // Параметр DESC устанавливает от больших значений к меньшим.
     const paramsOpt = useMemo(() => {
         return {
             search: search,
@@ -121,7 +118,7 @@ export const CallList = () => {
 
     return (
 
-        <Box sx={{ width: "1440px", margin: "64px auto 0 auto" }}>
+        <Box sx={{ width: "65%", margin: "64px 25% 0 25%" }}>
             <ListHeader
                 search={search}
                 onSearchChange={setSearch}
@@ -137,29 +134,28 @@ export const CallList = () => {
                                     className={`${sort === "date" ? "ButtonSortActive" : ""}`}
                                     onClick={() => {
                                         setSort("date")
-                                        if (sort === "date") setDateSort(dateSort === "asc" ? "desc" : "asc")
+                                        if (sort === "date") setDateSort(dateSort === "ASC" ? "DESC" : "ASC")
                                     }}>
                                     Время
-                                    {dateSort === "asc" ?
+                                    {dateSort === "ASC" ?
                                         <KeyboardArrowUpIcon /> :
                                         <KeyboardArrowDownIcon />}</ButtonStyled>
 
                             </TableCellHead>
                             <TableCellHead sx={{ width: "70px" }}>Сотрудник</TableCellHead>
-                            <TableCellHead sx={{ width: "325px", boxSizing: "border-box" }}>Звонок</TableCellHead>
-                            <TableCellHead sx={{ width: "214px", boxSizing: "border-box" }}>Источник</TableCellHead>
-                            <TableCellHead sx={{ width: "461px", boxSizing: "border-box" }}>Оценка</TableCellHead>
-                            <TableCellHead sx={{ width: "169px", boxSizing: "border-box", paddingRight: "30px" }}>
+                            <TableCellHead sx={{ width: "325px" }}>Звонок</TableCellHead>
+                            <TableCellHead sx={{ width: "214px" }}>Источник</TableCellHead>
+                            <TableCellHead sx={{ width: "461px" }}>Оценка</TableCellHead>
+                            <TableCellHead sx={{ width: "169px", paddingRight: "30px" }}>
                                 <ButtonStyled
                                     className={`${sort === "duration" ? "ButtonSortActive" : ""}`}
-
                                     onClick={() => {
                                         setSort("duration")
-                                        if (sort === "duration") setTimeSort(timeSort === "asc" ? "desc" : "asc")
+                                        if (sort === "duration") setTimeSort(timeSort === "ASC" ? "DESC" : "ASC")
                                     }}>
                                     Длительность
 
-                                    {timeSort === "asc" ?
+                                    {timeSort === "ASC" ?
                                         <KeyboardArrowUpIcon /> :
                                         <KeyboardArrowDownIcon />}
 

@@ -34,7 +34,7 @@ interface IFilterProps {
 export const ListHeader: FC<IListHeaderProps> = ({ search, onSearchChange, filters, onChangeType, setСalls, setСollegues, setSource, setErrors, setRating }) => {
 
     const [showSearch, setShowSearch] = useState(false)
-    return (<Box sx={{ width: "1440px", }}>
+    return (<Box sx={{ width: "100%", }}>
         <Box sx={{ height: "80px", }}>
 
         </Box>
