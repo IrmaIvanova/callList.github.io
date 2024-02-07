@@ -1,13 +1,12 @@
 
-import React, { useState, useEffect, useMemo, FC } from 'react';
-
-import TableCell from '@mui/material/TableCell';
-
+import React, { FC } from 'react';
 import TableRow from '@mui/material/TableRow';
 import Avatar from '@mui/material/Avatar';
+import Typography from '@mui/material/Typography';
 import CallMadeOutlinedIcon from '@mui/icons-material/CallMadeOutlined';
 import CallReceivedOutlinedIcon from '@mui/icons-material/CallReceivedOutlined';
 import Box from "@mui/material/Box/Box"
+import { TableCellItem } from "../CallList.styled"
 
 export interface IListItemProps {
     row: {
@@ -21,7 +20,14 @@ export interface IListItemProps {
             name: string,
 
         }
-        call: string
+        call: {
+            number: string,
+            partner: {
+                id: string,
+                name: string,
+                phone: string
+            }
+        }
         source: string
         rating: any,
         duration: string
@@ -40,16 +46,27 @@ export const ListItem: FC<IListItemProps> = ({ row, index }) => {
             key={index}
             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
         >
-            <TableCell component="th" scope="row">
+            <TableCellItem component="th" scope="row">
                 {row.type.in_out === 0 ? <CallMadeOutlinedIcon color={row.type.status === "Дозвонился" ? "success" : "error"} /> :
                     <CallReceivedOutlinedIcon color={row.type.status === "Дозвонился" ? "primary" : "error"} />}
-            </TableCell>
-            <TableCell align="right">{row.time}</TableCell>
-            <TableCell align="right"><Box sx={{ display: "flex", justifyContent: "center" }}><Avatar alt={row.collegue.name} src={row.collegue.avatar} /></Box></TableCell>
-            <TableCell align="right" sx={{ width: "246px", boxSizing: "border-box" }}>{row.call}</TableCell>
-            <TableCell align="right">{row.source}</TableCell>
-            <TableCell align="right">{row.rating}</TableCell>
-            <TableCell align="right">{row.duration}</TableCell>
+            </TableCellItem>
+            <TableCellItem >{row.time}</TableCellItem>
+            <TableCellItem ><Avatar alt={row.collegue.name} src={row.collegue.avatar} /></TableCellItem>
+            <TableCellItem sx={{ width: "325px", boxSizing: "border-box" }}>
+                <Typography sx={{ fontSize: "15px" }}>
+                    {row.call.number.length > 11 ? row.call.partner.phone : row.call.number}
+                </Typography>
+                <Typography sx={{ fontSize: "15px", color: " #5E7793" }}>
+                    {row.call.partner.name}
+                </Typography>
+            </TableCellItem>
+            <TableCellItem >
+                <Typography sx={{ fontSize: "15px", color: " #5E7793" }}>
+                    {row.source}
+                </Typography>
+            </TableCellItem>
+            <TableCellItem  >{row.rating}</TableCellItem>
+            <TableCellItem sx={{ textAlign: "right", paddingRight: "30px" }}>{row.duration}</TableCellItem>
         </TableRow>
 
     );

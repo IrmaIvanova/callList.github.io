@@ -21,7 +21,7 @@ export const StyledMenuItem = styled(MenuItem)({
 }) as typeof MenuItem
 
 
-export const Dropdown: FC<IDropdownOwnProps> = ({ options, defaultValue, onChange }) => {
+export const Dropdown: FC<IDropdownOwnProps> = ({ options, defaultValue, disabled, onChange }) => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
 
@@ -35,7 +35,7 @@ export const Dropdown: FC<IDropdownOwnProps> = ({ options, defaultValue, onChang
 
 
     const handleChange = (value: string) => () => {
-        const current = defaultValue === value ? '' : value
+        const current = defaultValue === value ? "all" : value
         setValue(current);
         onChange(current)
     };
@@ -50,6 +50,7 @@ export const Dropdown: FC<IDropdownOwnProps> = ({ options, defaultValue, onChang
                 aria-expanded={open ? 'true' : undefined}
                 variant="text"
                 disableElevation
+                disabled={disabled}
                 sx={{
                     textTransform: "inherit",
                     color: "rgba(94, 119, 147, 1)",

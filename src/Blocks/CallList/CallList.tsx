@@ -2,14 +2,18 @@
 import { useState, useEffect, useMemo } from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import IconButton from '@mui/material/IconButton';
+import Button from '@mui/material/Button';
 import Box from "@mui/material/Box/Box"
-import { PaperBox } from './CallList.styled'
+import { PaperBox, TableCellHead, IconButtonStyled, ButtonStyled } from './CallList.styled'
 import { ListHeader } from './ListHeader/ListHeader'
 import { ListItem } from './ListItem/ListItem'
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import query_String from 'query-string'
 function createData(
     type: any,
     time: any,
@@ -25,30 +29,43 @@ function createData(
 // - листинг звонков с выборкой по датам; 
 // - фильтрация звонков по типу: входящие, исходящие или все звонки; +
 // - проигрывание записи (если есть);
-//  - сортировка по дате и продолжительности через API. 
+//  - сортировка по дате и продолжительности через API +. 
 
-// https://api.skilla.ru/mango/getList
-// ? date_start=<начальная дата>
-// & date_end=<конечная дата>
-// & in_out=<признак входящего или исходящего звонка></признак>
 export const CallList = () => {
     const [list, setList] = useState([])
-
-    const [calls, setСalls] = useState("")
-    const [type, setType] = useState("")
-    const [collegues, setСollegues] = useState("")
-    const [source, setSource] = useState("")
-    const [rating, setRating] = useState("")
-    const [errors, setErrors] = useState("")
+    const [type, setType] = useState("all")
     const [search, setSearch] = useState("")
+    const [sort, setSort] = useState("date")
+    const [dateSort, setDateSort] = useState("desc")
+    const [timeSort, setTimeSort] = useState("desc")
+
+ 
+    // Параметр ASC (по умолчанию)  от меньших значений к большим. 
+    // Параметр DESC устанавливает от больших значений к меньшим.
+    const paramsOpt = useMemo(() => {
+        return {
+            search: search,
+            date_start: "",
+            date_end: "",
+            in_out: type,
+            sort_by: sort,
+            order: sort === "date" ? dateSort : timeSort
+        }
+    }, [type, search, sort, dateSort, timeSort])
 
 
-    const getApiData = async (params?: { [key: string]: string }) => { 
-       const callType = type === "" ? "" : "?in_out=" + type
-        // const opts = search === "" ? "" : "?search=" + search + callType
-        
+    const getApiData = async (params: { [key: string]: string }) => {
+        const clearData: any = {}
+        for (let [key, value] of Object.entries(params)) {
 
-        const url = `https://api.skilla.ru/mango/getList${callType}`
+            if (value !== '') clearData[key] = value
+        }
+        let queryString: string = ''
+
+        queryString += '?' + query_String.stringify({ ...clearData })
+
+        // const url = `https://api.skilla.ru/mango/getList`
+        const url = `https://api.skilla.ru/mango/getList${queryString}`
 
         const response = await fetch(
             url, {
@@ -58,6 +75,7 @@ export const CallList = () => {
                 "Authorization": "Bearer testtoken"
 
             },
+            // body: JSON.stringify(params)
         }
         ).then((response) => response.json());
 
@@ -68,10 +86,10 @@ export const CallList = () => {
     };
 
     useEffect(() => {
-        getApiData()
-    }, [type, search])
+        getApiData(paramsOpt)
+    }, [paramsOpt])
 
-    console.log("list", list)
+    // console.log("list", list)
     const getTime = (date: string) => {
         const TimeArr = new Date(date).toLocaleTimeString().split(":")
         return TimeArr.filter((el: string, idx: number) => idx !== TimeArr.length - 1).join(":");
@@ -87,11 +105,15 @@ export const CallList = () => {
             },
             getTime(el.date),
             {
+                id: el.id,
                 avatar: el.person_avatar,
                 name: el.person_name + " " + el.person_surname,
 
             },
-            el.from_number,
+            {
+                number: el.from_number,
+                partner: el.partner_data
+            },
             el.source,
             0,
             el.time),)
@@ -100,29 +122,55 @@ export const CallList = () => {
     return (
 
         <Box sx={{ width: "1440px", margin: "64px auto 0 auto" }}>
-            <ListHeader search={search} onSearchChange={setSearch}
+            <ListHeader
+                search={search}
+                onSearchChange={setSearch}
                 onChangeType={setType}
-                setErrors={setErrors}
-                setRating={setRating}
-                setSource={setSource}
-                setСalls={setСalls}
-                setСollegues={setСollegues} />
+            />
             <TableContainer component={PaperBox}>
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
-                        <TableRow>
-                            <TableCell>Тип</TableCell>
-                            <TableCell align="right">Время</TableCell>
-                            <TableCell align="right">Сотрудник</TableCell>
-                            <TableCell align="right" sx={{ width: "246px", boxSizing: "border-box" }}>Звонок</TableCell>
-                            <TableCell align="right">Источник</TableCell>
-                            <TableCell align="right">Оценка</TableCell>
-                            <TableCell align="right">Длительность</TableCell>
+                        <TableRow sx={{ color: "#5E7793" }}>
+                            <TableCellHead sx={{ width: "25px" }}>Тип</TableCellHead>
+                            <TableCellHead sx={{ width: "77px" }}>
+                                <ButtonStyled
+                                    className={`${sort === "date" ? "ButtonSortActive" : ""}`}
+                                    onClick={() => {
+                                        setSort("date")
+                                        if (sort === "date") setDateSort(dateSort === "asc" ? "desc" : "asc")
+                                    }}>
+                                    Время
+                                    {dateSort === "asc" ?
+                                        <KeyboardArrowUpIcon /> :
+                                        <KeyboardArrowDownIcon />}</ButtonStyled>
+
+                            </TableCellHead>
+                            <TableCellHead sx={{ width: "70px" }}>Сотрудник</TableCellHead>
+                            <TableCellHead sx={{ width: "325px", boxSizing: "border-box" }}>Звонок</TableCellHead>
+                            <TableCellHead sx={{ width: "214px", boxSizing: "border-box" }}>Источник</TableCellHead>
+                            <TableCellHead sx={{ width: "461px", boxSizing: "border-box" }}>Оценка</TableCellHead>
+                            <TableCellHead sx={{ width: "169px", boxSizing: "border-box", paddingRight: "30px" }}>
+                                <ButtonStyled
+                                    className={`${sort === "duration" ? "ButtonSortActive" : ""}`}
+
+                                    onClick={() => {
+                                        setSort("duration")
+                                        if (sort === "duration") setTimeSort(timeSort === "asc" ? "desc" : "asc")
+                                    }}>
+                                    Длительность
+
+                                    {timeSort === "asc" ?
+                                        <KeyboardArrowUpIcon /> :
+                                        <KeyboardArrowDownIcon />}
+
+                                </ButtonStyled>
+                            </TableCellHead>
+
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {rows.map((row, index: number) => (
-                            <ListItem row={row} index={index} />
+                            <ListItem key={`ListItemKey_${row.collegue.id}`} row={row} index={index} />
                         ))}
                     </TableBody>
                 </Table>

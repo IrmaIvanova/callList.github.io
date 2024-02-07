@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useMemo, FC } from 'react';
+import React, { useState, FC } from 'react';
 import Box from "@mui/material/Box/Box"
 import { Dropdown } from "../../../UIComponents/Dropdown/Dropdown"
 import { calls, collegues, errors, rating, source, types } from './FilterConstants'
@@ -12,11 +12,11 @@ interface IListHeaderProps {
     search: string;
     onSearchChange: (value: string) => void
     onChangeType: (value: string) => void
-    setСalls: (value: string) => void
-    setСollegues: (value: string) => void
-    setSource: (value: string) => void
-    setErrors: (value: string) => void
-    setRating: (value: string) => void
+    setСalls?: (value: string) => void
+    setСollegues?: (value: string) => void
+    setSource?: (value: string) => void
+    setErrors?: (value: string) => void
+    setRating?: (value: string) => void
     filters?: IFilterProps[]
 }
 
@@ -83,11 +83,11 @@ export const ListHeader: FC<IListHeaderProps> = ({ search, onSearchChange, filte
             }
             <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                 <Dropdown open={false} options={types} defaultValue={"all"} onChange={(value) => onChangeType(value)} />
-                <Dropdown open={false} options={collegues} defaultValue={"all"} onChange={(value) => setСalls(value)} />
-                <Dropdown open={false} options={calls} defaultValue={"all"} onChange={(value) => setСollegues(value)} />
-                <Dropdown open={false} options={source} defaultValue={"all"} onChange={(value) => setSource(value)} />
-                <Dropdown open={false} options={errors} defaultValue={"all"} onChange={(value) => setErrors(value)} />
-                <Dropdown open={false} options={rating} defaultValue={"all"} onChange={(value) => setRating(value)} />
+                <Dropdown open={false} disabled options={collegues} defaultValue={"all"} onChange={(value) => setСalls && setСalls(value)} />
+                <Dropdown open={false} disabled options={calls} defaultValue={"all"} onChange={(value) => setСollegues && setСollegues(value)} />
+                <Dropdown open={false} disabled options={source} defaultValue={"all"} onChange={(value) => setSource && setSource(value)} />
+                <Dropdown open={false} disabled options={errors} defaultValue={"all"} onChange={(value) => setErrors && setErrors(value)} />
+                <Dropdown open={false} disabled options={rating} defaultValue={"all"} onChange={(value) => setRating && setRating(value)} />
             </Box>
         </Box>
     </Box >

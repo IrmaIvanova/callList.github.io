@@ -7,6 +7,7 @@ export interface IDropdownOwnProps extends MenuProps {
     // value:string
     defaultValue:string;
     onChange: (value: any) => void
+    disabled?: boolean
 }
 
 export type TOption = {
