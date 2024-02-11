@@ -1,5 +1,29 @@
 
 import { TOption } from "../../../UIComponents/Dropdown/Dropdown.interface"
+
+export const dateOptions: TOption[] = [
+    {
+        label: "3 дня",
+        value: "all"
+    },
+    {
+        label: "Неделя",
+        value: 'clients'
+    },
+    {
+        label: "Месяц",
+        value: 'workers'
+    },
+    {
+        label: "Год",
+        value: 'work5ers'
+    },
+    {
+        label: "Указать даты",
+        value: 'app'
+    },
+]
+
 export const calls: TOption[] = [
     {
         label: "Все звонки",
@@ -18,8 +42,7 @@ export const calls: TOption[] = [
     //     value: 'app'
     // },
 ]
-// 1 - входящий звонок
-// 0 - исходящий звонок
+
 export const types: TOption[] = [
     {
         label: "Все типы",
@@ -34,6 +57,7 @@ export const types: TOption[] = [
         value: '0'
     }
 ]
+
 export const collegues: TOption[] = [
 
     {
@@ -117,7 +141,7 @@ export const errors: TOption[] = [
     // }
 ]
 
-// export const filters  =[ 
+// export const filters  =[
 // {   defaultValue: "all",
 //     onFilterChange: (value: string) => void,
 //     open: false,

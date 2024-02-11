@@ -34,21 +34,25 @@ function createData(
 export const CallList = () => {
     const [list, setList] = useState([])
     const [type, setType] = useState("all")
+    const [startDate, setStartDate] = useState("")
+    const [endDate, setEndDate] = useState("")
     const [search, setSearch] = useState("")
     const [sort, setSort] = useState("date")
     const [dateSort, setDateSort] = useState("DESC")
     const [timeSort, setTimeSort] = useState("DESC")
-
+    console.log(" dates endDate", endDate)
+    console.log(" dates startDate", startDate)
+    // 2024-02-11T15%3A03%3A03.644Z&date_start=2024-02-08T
     const paramsOpt = useMemo(() => {
         return {
             search: search,
-            date_start: "",
-            date_end: "",
+            date_start: startDate,
+            date_end: endDate,
             in_out: type,
             sort_by: sort,
             order: sort === "date" ? dateSort : timeSort
         }
-    }, [type, search, sort, dateSort, timeSort])
+    }, [type, search, sort, dateSort, timeSort, startDate, endDate])
 
 
     const getApiData = async (params: { [key: string]: string }) => {
@@ -123,6 +127,8 @@ export const CallList = () => {
                 search={search}
                 onSearchChange={setSearch}
                 onChangeType={setType}
+                onChangeStartDate={setStartDate}
+                onChangeEndDate={setEndDate}
             />
             <TableContainer component={PaperBox}>
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
