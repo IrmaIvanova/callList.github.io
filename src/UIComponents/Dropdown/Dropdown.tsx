@@ -21,7 +21,7 @@ export const StyledMenuItem = styled(MenuItem)({
 }) as typeof MenuItem
 
 
-export const Dropdown: FC<IDropdownOwnProps> = ({ options, defaultValue, disabled, onChange }) => {
+export const Dropdown: FC<IDropdownOwnProps> = ({ options, defaultValue, papperWidth, disabled, onChange }) => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
 
@@ -35,7 +35,7 @@ export const Dropdown: FC<IDropdownOwnProps> = ({ options, defaultValue, disable
 
 
     const handleChange = (value: string) => () => {
-        const current = defaultValue === value ? "all" : value
+        const current = defaultValue === value ? defaultValue : value
         setValue(current);
         onChange(current)
     };
@@ -79,7 +79,7 @@ export const Dropdown: FC<IDropdownOwnProps> = ({ options, defaultValue, disable
                 }}
                 sx={{
                     ".MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded": {
-                        width: "204px",
+                        width: papperWidth || "204px",
                         border: "1px solid #EAF0FA",
                         boxShadow: "0px 0px 26px 0px rgba(233, 237, 243, 0.8)",
                         display: "flex",
@@ -94,7 +94,7 @@ export const Dropdown: FC<IDropdownOwnProps> = ({ options, defaultValue, disable
                     onClick={handleChange(value)}>
                     <Typography sx={{
                         fontSize: "14px",
-                        width: "204px",
+                        width: papperWidth || "204px",
                         color: value === currentValue ? "rgba(0, 44, 251, 1)" : "rgba(137, 156, 177, 1)",
                         "&:hover": {
                             color: "rgba(18, 41, 69, 1)",

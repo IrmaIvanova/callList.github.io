@@ -4,23 +4,23 @@ import { TOption } from "../../../UIComponents/Dropdown/Dropdown.interface"
 export const dateOptions: TOption[] = [
     {
         label: "3 дня",
-        value: "all"
+        value: "threedays"
     },
     {
         label: "Неделя",
-        value: 'clients'
+        value: 'week'
     },
     {
         label: "Месяц",
-        value: 'workers'
+        value: 'month'
     },
     {
         label: "Год",
-        value: 'work5ers'
+        value: 'year'
     },
     {
         label: "Указать даты",
-        value: 'app'
+        value: 'range'
     },
 ]
 

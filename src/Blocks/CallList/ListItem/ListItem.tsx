@@ -50,23 +50,29 @@ export const ListItem: FC<IListItemProps> = ({ row, index }) => {
                 {row.type.in_out === 0 ? <CallMadeOutlinedIcon color={row.type.status === "Дозвонился" ? "success" : "error"} /> :
                     <CallReceivedOutlinedIcon color={row.type.status === "Дозвонился" ? "primary" : "error"} />}
             </TableCellItem>
-            <TableCellItem >{row.time}</TableCellItem>
+
+            <TableCellItem sx={{ color: "#122945" }}>{row.time}</TableCellItem>
+
             <TableCellItem ><Avatar alt={row.collegue.name} src={row.collegue.avatar} /></TableCellItem>
+
             <TableCellItem sx={{ width: "325px", boxSizing: "border-box" }}>
-                <Typography sx={{ fontSize: "15px" }}>
+                <Typography sx={{ fontSize: "15px", color: "#122945" }}>
                     {row.call.number.length > 11 ? row.call.partner.phone : row.call.number}
                 </Typography>
                 <Typography sx={{ fontSize: "15px", color: " #5E7793" }}>
                     {row.call.partner.name}
                 </Typography>
             </TableCellItem>
+
             <TableCellItem >
                 <Typography sx={{ fontSize: "15px", color: " #5E7793" }}>
                     {row.source}
                 </Typography>
             </TableCellItem>
-            <TableCellItem  >{row.rating}</TableCellItem>
-            <TableCellItem sx={{ textAlign: "right", paddingRight: "30px" }}>{row.duration}</TableCellItem>
+
+            <TableCellItem  sx={{ color: "#122945"}}>{row.rating}</TableCellItem>
+
+            <TableCellItem sx={{ textAlign: "right", paddingRight: "30px", color: "#122945" }}>{row.duration}</TableCellItem>
         </TableRow>
 
     );

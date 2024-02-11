@@ -40,9 +40,7 @@ export const CallList = () => {
     const [sort, setSort] = useState("date")
     const [dateSort, setDateSort] = useState("DESC")
     const [timeSort, setTimeSort] = useState("DESC")
-    console.log(" dates endDate", endDate)
-    console.log(" dates startDate", startDate)
-    // 2024-02-11T15%3A03%3A03.644Z&date_start=2024-02-08T
+
     const paramsOpt = useMemo(() => {
         return {
             search: search,
@@ -76,7 +74,6 @@ export const CallList = () => {
                 "Authorization": "Bearer testtoken"
 
             },
-            // body: JSON.stringify(params)
         }
         ).then((response) => response.json());
 

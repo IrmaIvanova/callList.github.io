@@ -43,6 +43,7 @@ interface IFilterProps {
 
 export const ListHeader: FC<IListHeaderProps> = ({ search, onSearchChange, filters, onChangeType, onChangeStartDate, onChangeEndDate, setСalls, setСollegues, setSource, setErrors, setRating }) => {
     const [showSearch, setShowSearch] = useState(false)
+    const [valueDateDropdown, setValueDateDropdown] = useState("threedays")
     return (<Box sx={{ width: "100%", }}>
         <HeaderFirstBox >
             <BalanceBox>
@@ -71,9 +72,9 @@ export const ListHeader: FC<IListHeaderProps> = ({ search, onSearchChange, filte
 
                     }
                 }}
-                defaultValue={"all"}
+                defaultValue={"threedays"}
                 onChange={(value) => {
-                    onChangeType(value)
+                    setValueDateDropdown(value)
                 }} />
         </HeaderFirstBox>
 

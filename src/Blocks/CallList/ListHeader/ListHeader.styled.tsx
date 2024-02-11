@@ -5,7 +5,8 @@ import TextField from '@mui/material/TextField';
 
 export const BalanceTypography = styled(Typography)({
     fontSize: "14px",
-    color: "#899CB1"
+    color: "#899CB1",
+    
 }) as typeof Typography
 
 export const BalanceBox = styled(Box)({

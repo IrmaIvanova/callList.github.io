@@ -25,9 +25,12 @@ export const DateDropdown: FC<IDateDropdownOwnProps> = ({ options, defaultValue,
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const dateNow = new Date();
 
-    const start = sub(dateNow, { days: 3 })
+    const startTрreeDays = sub(dateNow, { days: 3 })
+    const startWeek = sub(dateNow, { weeks: 1 })
+    const startMonth = sub(dateNow, { months: 1 })
+    const startYear = sub(dateNow, { years: 1 })
     const end = new Date()
-    const [rangeDate, setRangeDate] = React.useState<DateRange | null>([start, end] || null);
+    const [rangeDate, setRangeDate] = React.useState<DateRange | null>([startTрreeDays, end] || null);
 
     const open = Boolean(anchorEl);
 
@@ -42,16 +45,41 @@ export const DateDropdown: FC<IDateDropdownOwnProps> = ({ options, defaultValue,
 
 
     const handleChange = (value: string) => () => {
-        const current = defaultValue === value ? "all" : value
+        const current = defaultValue === value ? defaultValue : value
         setValue(current);
         if (value === "app") onChange(rangeDate)
         onChange(current)
     };
 
-    const dateValueChanged = useMemo(() => { onChangeDateValue(rangeDate?.map((date)=> 
-        format(date, "dd.MM.yyyy")
-        
-        )) }, [rangeDate])
+    const dateValueChanged = useMemo(() => {
+        if (currentValue === "threedays") {
+            onChangeDateValue([startTрreeDays, end]?.map((date) =>
+                format(date, "dd.MM.yyyy")
+            ))
+        }
+        if (currentValue === "week") {
+            onChangeDateValue([startWeek, end]?.map((date) =>
+                format(date, "dd.MM.yyyy")
+            ))
+        }
+        if (currentValue === "month") {
+            onChangeDateValue([startMonth, end]?.map((date) =>
+                format(date, "dd.MM.yyyy")
+            ))
+        }
+        if (currentValue === "year") {
+            onChangeDateValue([startYear, end]?.map((date) =>
+                format(date, "dd.MM.yyyy")
+            ))
+        }
+        if (currentValue === "range") {
+            onChangeDateValue(rangeDate?.map((date) =>
+                format(date, "dd.MM.yyyy")
+
+            ))
+        }
+    }, [rangeDate, currentValue])
+
     const currentButtonText = options.find((el: TOption) => el.value === currentValue)?.label
     return (
         <div>
@@ -136,6 +164,7 @@ export const DateDropdown: FC<IDateDropdownOwnProps> = ({ options, defaultValue,
                             format="dd.MM.yyyy"
                             value={rangeDate}
                             caretAs={CalendarTodayIcon}
+                            placeholder="__.__.__-__.__.__"
                             onChange={(value, event) => {
                                 console.log(event)
                                 setRangeDate(value)
