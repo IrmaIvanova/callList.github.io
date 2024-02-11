@@ -8,7 +8,7 @@ export const MainHeaderBox = styled(Box)({
     background: " #fff",
     marginLeft: "240px",
     height: "64px",
-    padding: "0 290px",
+    padding: "0 233px",
     boxShadow: "0px 4px 5px 0px #E9EDF3",
     position: "fixed",
     top: "0",
@@ -16,7 +16,7 @@ export const MainHeaderBox = styled(Box)({
 }) as typeof Box
 
 export const MainHeaderContainer = styled(Box)({
-    width: "1370px",
+    width: "1241px",
     zIndex: "100",
     display: " flex",
     alignItems: "center",
@@ -28,7 +28,7 @@ export const MainHeaderResults = styled(Box)({
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
-    gap: "56px"
+    gap: "34px"
 }) as typeof Box
 
 export const MainHeaderPersons= styled(Box)({
